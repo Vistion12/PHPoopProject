@@ -4,6 +4,6 @@ namespace Vistion\Oop\interfaces;
 
 interface IModel
 {
-    public function getOne(int $id);
-    public function getAll();
+    public static function getOne(int $id);
+    public static function getAll();
 }

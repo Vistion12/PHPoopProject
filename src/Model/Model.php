@@ -5,35 +5,55 @@ namespace Vistion\Oop\Model;
 use Vistion\Oop\Core\Db;
 use Vistion\Oop\interfaces\IModel;
 
-//TODO реализовать  метод конструктор запросов, что бы было $user->query()-> where('name','alex')
-
-abstract class Model implements  IModel
+abstract class Model  implements  IModel
 {
+    abstract static protected function getTableName(): string;
 
-    protected DB $db;
-    protected string $tableName = '';
-    protected string $whereClause = '';
-    abstract protected function getTableName(): string;
 
-    public function __construct(Db $db)
+    public static function getOne(int $id) :static
     {
-        $this->db=$db;
+        $table = static::getTableName();
+        $sql = "SELECT * FROM $table WHERE id = :id" . PHP_EOL;
+        return Db::getInstance()->queryOneObject($sql,['id' => $id],static::class);
     }
 
-    public function getOne(int $id)
-    {
-        $sql = "SELECT * FROM {$this->getTableName()} WHERE id=$id" . PHP_EOL;
-        return $this->db->queryOne($sql);
-    }
 
-    public function getAll()
+    public static function getAll(): array
     {
-        $sql = "SELECT * FROM {$this->tableName} {$this->whereClause}";
-        return $this->db->queryAll($sql) . PHP_EOL;
+        $table = static::getTableName();
+        $sql = "SELECT * FROM $table" . PHP_EOL;
+        return Db::getInstance()->queryAll($sql);
     }
 
     public function query()
     {
+        return $this;
+    }
+    public function insert(): static
+    {
+        $table = static::getTableName();
+        $columns = [];
+        $values = [];
+
+
+        foreach ($this as $key => $value) {
+            if ($key != 'id') {
+                $columns[] = $key;
+                $values[] = $value;
+            }
+        }
+
+
+        $columnsList = implode(',', $columns);
+        $placeholders = implode(',', array_fill(0, count($values), '?'));
+        $sql = "INSERT INTO $table ($columnsList) VALUES ($placeholders)";
+
+
+        Db::getInstance()->execute($sql, $values);
+
+
+        $this->id = Db::getInstance()->lastInsertId();
+
         return $this;
     }
     public function where(string $column, string $value)

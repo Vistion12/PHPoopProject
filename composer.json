@@ -11,5 +11,7 @@
             "email": "n89190245729@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "ext-pdo": "*"
+    }
 }

@@ -5,9 +5,11 @@ namespace Vistion\Oop\Model;
 class Comment extends Model
 {
     public int $id;
-    public static $comentTitle;
+    public int $user_id;
+    public int $post_id;
 
-    protected function getTableName(): string
+
+    protected static function getTableName(): string
     {
         return 'comments';
     }

@@ -1,24 +1,40 @@
 <?php
 
-
-use Vistion\Oop\Core\Db;
 use Vistion\Oop\Model\Category;
-use Vistion\Oop\Model\Comment;
 use Vistion\Oop\Model\Post;
 use Vistion\Oop\Model\Role;
-use Vistion\Oop\Model\User;
+
 
 include "vendor/autoload.php";
 
+//$category = new Category("туризм");
+//
+//
+//$category->insert();
+//
+//print_r($category);
+//
+//die();
+///**@var Category $category*/
+//$category = Category::getOne(1);
+//
+//print_r($category->getAll());
 
-$db = new Db();
-$post = new Post($db);
-$user = new User($db);
-$role = new Role($db);
-$category = new Category($db);
-$comment = new Comment($db);
+//$post = new Post(" мой Заголовок", "мой пост");
+//
+//// Вставка поста в базу данных
+//$post->insert();
+//print_r($post);
+//
+//// Получение всех постов
+//$allPosts = Post::getAll();
+//print_r($allPosts);
 
-
+ $role = new Role("Admin");
+ $role->insert();
+ print_r($role);
+ $allRoles = Role::getAll();
+ print_r($allRoles);
 // Получаем и выводим пользователя с ID 5
 //print_r($user->getOne(5));
 //
@@ -40,5 +56,5 @@ $comment = new Comment($db);
 
 
 // Получаем пользователя с именем 'alex'
-$result = $user->query()->where('name', 'alex')->getAll();
-print_r($result);
+//$result = $user->query()->where('name', 'alex')->getAll();
+//print_r($result);
